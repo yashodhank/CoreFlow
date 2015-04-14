@@ -1,0 +1,134 @@
+[
+ {
+  "Group": "Financial", 
+  "docstatus": 0, 
+  "doctype": "CoreFlow Expression", 
+  "expression_name": "Simple Interest", 
+  "modified": "2015-04-15 00:39:45.890401", 
+  "name": "Simple Interest", 
+  "variables": [
+   {
+    "alias": "FV", 
+    "description": "returns the future value", 
+    "equation": "P * (1 + i * n)", 
+    "variable": "S", 
+    "variable_type": "Currency"
+   }, 
+   {
+    "alias": "PV", 
+    "description": "returns the present value", 
+    "equation": "S / (1 + i * n)", 
+    "variable": "P", 
+    "variable_type": "Currency"
+   }, 
+   {
+    "alias": "RATE", 
+    "description": "returns the rate in value", 
+    "equation": "P * i * n", 
+    "variable": "J", 
+    "variable_type": "Currency"
+   }, 
+   {
+    "alias": "RATE2", 
+    "description": "returns the rate in value", 
+    "equation": "S - P", 
+    "variable": "J2", 
+    "variable_type": "Currency"
+   }, 
+   {
+    "alias": "EFFECT", 
+    "description": "calculates the effective annual interest rate for a given nominal annual interest rate and the number of compounding periods per year.", 
+    "equation": "i * n", 
+    "variable": "j", 
+    "variable_type": "Percent"
+   }, 
+   {
+    "alias": "EFFECT2", 
+    "description": "calculates the effective annual interest rate for a given nominal annual interest rate and the number of compounding periods per year.", 
+    "equation": "(S - P) / P", 
+    "variable": "j2", 
+    "variable_type": "Percent"
+   }, 
+   {
+    "alias": "RATEP", 
+    "description": "returns the rate in value in percent", 
+    "equation": "(S / P - 1) / n", 
+    "variable": "i", 
+    "variable_type": "Percent"
+   }, 
+   {
+    "alias": "PERIODS", 
+    "description": "returns the number of periods", 
+    "equation": "(S / P - 1) / i", 
+    "variable": "n", 
+    "variable_type": "Int"
+   }
+  ]
+ }, 
+ {
+  "Group": "Financial", 
+  "docstatus": 0, 
+  "doctype": "CoreFlow Expression", 
+  "expression_name": "Compound Interest", 
+  "modified": "2015-04-15 00:49:41.015334", 
+  "name": "Compound Interest", 
+  "variables": [
+   {
+    "alias": "FV", 
+    "description": "returns the future value", 
+    "equation": "P * (1 + i * n)", 
+    "variable": "S", 
+    "variable_type": "Currency"
+   }, 
+   {
+    "alias": "PV", 
+    "description": "returns the present value", 
+    "equation": "S / (1 + i * n)", 
+    "variable": "P", 
+    "variable_type": "Currency"
+   }, 
+   {
+    "alias": "RATE", 
+    "description": "returns the rate in value", 
+    "equation": "P * ((1 + i) ^ n - 1)", 
+    "variable": "J", 
+    "variable_type": "Currency"
+   }, 
+   {
+    "alias": "RATE2", 
+    "description": "returns the rate in value", 
+    "equation": "S - P", 
+    "variable": "J2", 
+    "variable_type": "Currency"
+   }, 
+   {
+    "alias": "EFFECT", 
+    "description": "calculates the effective annual interest rate for a given nominal annual interest rate and the number of compounding periods per year.", 
+    "equation": "(1 + i) ^ n - 1", 
+    "variable": "j", 
+    "variable_type": "Percent"
+   }, 
+   {
+    "alias": "EFFECT2", 
+    "description": "calculates the effective annual interest rate for a given nominal annual interest rate and the number of compounding periods per year.", 
+    "equation": "(S - P) / P", 
+    "variable": "j2", 
+    "variable_type": "Percent"
+   }, 
+   {
+    "alias": "RATEP", 
+    "description": "returns the rate in value in percent", 
+    "equation": "(S / P) ^ (1 / n) - 1", 
+    "variable": "i", 
+    "variable_type": "Percent"
+   }, 
+   {
+    "alias": "PERIODS", 
+    "description": "returns the number of periods", 
+    "equation": "Math.log(S / P) / Math.log(1 + i)", 
+    "variable": "n", 
+    "variable_type": "Int"
+   }
+  ]
+ }
+]

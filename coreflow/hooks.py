@@ -107,3 +107,7 @@ app_version = "0.0.1"
 # 	"frappe.desk.doctype.event.event.get_events": "coreflow.event.get_events"
 # }
 
+fixtures = [
+	'CoreFlow Expression'
+]
+

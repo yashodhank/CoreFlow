@@ -23,6 +23,14 @@ function repeat(s, n){
     return ret;
 }
 
+function sets(list){
+	ret = {};
+	for (i=0, j = list.length; i<j; i++){
+		ret[list[i]]=true;
+	}
+	return Object.keys(ret);
+}
+
 function solve(key){
     debugger;
     var variables = expressions[key],
@@ -37,11 +45,11 @@ function solve(key){
                '(v) => valor com 3 casas decimais\n' + 
                '(%) => percentual com 3 casas decimais\n' +
                '(i) => valor inteiro';
-    console.log(help);
+    log(help);
     while(true) {
-        console.log('\n'+key+'\n');
+        log('\n'+key+'\n');
         for (var i = 0, j = variables.length; i < j; i ++){
-            console.log(format(mask, variables[i]));   
+            log(format(mask, variables[i]));   
         }
         var calculate = ' ';
         while (variables_zip[0].indexOf(calculate)===-1){
@@ -51,9 +59,9 @@ function solve(key){
         var pos = variables_zip[0].indexOf(calculate),
             f = variables_zip[3][pos],
             f2 = f.replace(/Math\.\w+/, ''),
-            vf = f2.match(/\w+/g).filter(function(v){
+            vf = sets(f2.match(/\w+/g).filter(function(v){
             	return (v!==calculate) && (!v.test(/^\d$/));
-            }),
+            })),
             f2 = f;
         for (var i=0, j = vf.length; i<j; i++){
             var v = prompt(format('Digite o valor de {0}', [vf[i]]));
@@ -66,55 +74,50 @@ function solve(key){
             f2 = f2.replace((new RegExp(format('\\b{0}\\b', [vf[i]]))), v);
         }
       	if (f2.indexOf('=')!==-1){
-            var result = solve_with_greedy_bissection(calculate, f2);
+            var result = bisection(calculate, f2);
         } else {
             var result = eval(f2.replace(/([0-9.]+)\ +?\^\ +?([0-9.]+)/, function(){ return format('Math.pow({1}, {2})', arguments)}));
         }
-        console.log(format('\n{0}: {1}', [calculate, f]));
-        console.log(format('{0}: {1}', [calculate, f2]));
+        log(format('\n{0}: {1}', [calculate, f]));
+        log(format('{0}: {1}', [calculate, f2]));
         result = formatter[variables[pos][1]](result);
-        console.log(format('{0} = {1}', [calculate, result]));
+        log(format('{0} = {1}', [calculate, result]));
 
     }
 }
 
-function solve_with_greedy_bissection(i,f){
-    debugger;
-    var f1, f2 = f.split('=');
-    try{
-        var r = parseFloat(f1),
-            f = f2.replace(/([0-9.]+)\ +?\^\ +?([0-9.]+)/, function(){ return format('Math.pow({1}, {2})', arguments) });
-    } catch(e){
-        var r = parseFloat(f2),
-            f = f1.replace(/([0-9.]+)\ +?\^\ +?([0-9.]+)/, function(){ return format('Math.pow({1}, {2})', arguments) });
-    }
-    var v = 0;
-    while (true){
-        try {
-            var regex = new RegExp(format('\\b{0}\\b', [i])),
-                c = eval(f.replace(regex, v+''));
-            if (c === Infinity){
-                throw new Error('ZeroDivisionError');
-            }
-            break;
-        } catch (e){
-            v += 1;
-        }
-    }
-    var vmin = -1e10 -1, vmax = 1e10;
-    while(Math.abs(r - c) > 0.00001){
-        if (c > r){
-            vmax = v;
-        } else {
-            vmin = v;
-        }
-        v = (vmin + vmax) / 2;
-        f.format(regex, v +'');
-        c = eval(f.replace(regex, v+''))
-        if (c===Infinity){
-            throw new Error('ZeroDivisionError');
-        }
-    }
+function bisection(i, f){
+	var fvars = replace(/([0-9.]+)\ +?\^\ +?([0-9.]+)/, function(){ return format('Math.pow({1}, {2})', arguments) }).split("="),
+		f1 = fvars[0],
+		f2 = fvars[1],
+		regex = new RegExp(format('\\b{0}\\b', i)),
+		vmin = -1e10 -1, 
+		vmax = 1e10,
+		c;
+	if (f1.replace(/ /g, "").match(/^[0-9.]+$/)){
+		var r = parseFloat(f1);
+	} else {
+		var r = parseFloa(f2);
+	}
+	v = 0;
+	while (true){
+		c = eval(f.replace(regex, v+''));
+		if (c===Infinity || isNaN(c)){
+			v++;
+		} else {
+			break;
+		}
+	}
+	while (Match.abs(r - c) > 0.00001){
+		if (c > r){
+			vmax = v;
+		} else {
+			vmin = v;
+		}
+		v = (vmin + vmax) / 2;
+		c = eval(f.replace(regex, v+''));
+	}
+	return v;
 }
 
 var expressions = {};
