@@ -1,0 +1,18 @@
+include MANIFEST.in
+include requirements.txt
+include *.json
+include *.md
+include *.py
+include *.txt
+recursive-include coreflow *.css
+recursive-include coreflow *.csv
+recursive-include coreflow *.html
+recursive-include coreflow *.ico
+recursive-include coreflow *.js
+recursive-include coreflow *.json
+recursive-include coreflow *.md
+recursive-include coreflow *.png
+recursive-include coreflow *.py
+recursive-include coreflow *.svg
+recursive-include coreflow *.txt
+recursive-exclude coreflow *.pyc

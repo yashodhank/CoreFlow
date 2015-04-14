@@ -1,0 +1,78 @@
+
+.conditional:first-child > .remove {
+  display: none;
+}
+
+#error_message_wrapper {
+  margin: 20px 0;
+}
+
+.conditional:first-child {
+  padding-left: 60px;
+}
+
+.conditional {
+  padding-left: 20px;
+}
+
+
+
+  .conditional .all-any-none-wrapper {
+    margin: 5px 20px 5px -60px;
+    display: -moz-inline-stack;
+    display: inline-block;
+  }
+
+.all-any-none {
+  margin-right: 10px;
+}
+
+.all-any-none-wrapper, .conditional, .rule {
+  margin: 10px 0;
+}
+
+.add-rule, .add-condition, .remove {
+  margin: auto 5px;
+}
+
+.remove {
+  color: red;
+}
+
+.rule input {
+  width: 250px;
+}
+
+.rule select {
+  margin-right: 10px;
+}
+
+.action-buttons {
+  margin: 20px 0;
+}
+
+.action {
+  margin: 10px 0;
+}
+
+.action .subfields, .action .subfields .field {
+  display: inline;
+}
+
+.action label {
+  display: none;
+}
+
+.action select, .action input, .action textarea {
+  margin-right: 10px;
+}
+
+.action textarea, .action input {
+  width: 250px;
+}
+
+.action textarea {
+  vertical-align: top;
+  height: 50px;
+}
+
