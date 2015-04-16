@@ -27,7 +27,7 @@ class RuleEngine(object):
 		return result
 
 	def operator(self, name):
-		return self.operators['name']
+		return self.operators[name]
 
 	def runActions(self, actionsAdapter):
 		for action_data in self.actions:
