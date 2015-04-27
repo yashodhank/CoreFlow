@@ -32,7 +32,7 @@
 }
 
 .add-rule, .add-condition, .remove {
-  margin: auto 5px;
+  margin: auto 5px auto 0px;
 }
 
 .remove {
@@ -48,7 +48,7 @@
 }
 
 .action-buttons {
-  margin: 20px 0;
+  margin-bottom: 20px;
 }
 
 .action {
@@ -76,3 +76,11 @@
   height: 50px;
 }
 
+ul.tagit {
+  display: inline !important;
+}
+
+ul.tagit li {
+  display: inherit !important;
+  float: none !important;
+}

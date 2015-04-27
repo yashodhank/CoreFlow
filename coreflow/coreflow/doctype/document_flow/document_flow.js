@@ -2,6 +2,7 @@
 {% include "public/js/conditions-builder.js" %}
 {% include "public/js/standard-operators.js" %}
 {% include "public/js/standard-actions.js" %}
+{% include "public/js/rule-engine.js" %}
 
 cur_frm.cscript.onload = function(doc, cdt, cdn){
 	cur_frm.fields_dict.document_type.get_query = function(doc, cdt, cdn){
@@ -15,8 +16,8 @@ cur_frm.cscript.onload = function(doc, cdt, cdn){
 			]
 		}
 	}
-	cur_frm.cscript.initialize_conditions();
-	cur_frm.cscript.initialize_actions();
+	//cur_frm.cscript.initialize_conditions();
+	cur_frm.cscript.initialize_global_actions();
 }
 
 cur_frm.cscript.initialize_conditions = function(){
@@ -50,8 +51,13 @@ cur_frm.cscript.initialize_conditions = function(){
 	});
 }
 
-cur_frm.cscript.initialize_actions = function(){
+cur_frm.cscript.initialize_global_actions = function(){
     cur_frm.fields_dict.actions_html.$wrapper.actionsBuilder({
-    	fields: CoreFlow.Actions.ALL
+    	fields: CoreFlow.Actions.GLOBAL,
+    	data: JSON.parse(cur_frm.doc.actions || '[]')
     });
+}
+
+cur_frm.cscript.validate = function(doc, cdt, cdn){
+	doc.actions = JSON.stringify(cur_frm.fields_dict.actions_html.$wrapper.actionsBuilder('data'));
 }
