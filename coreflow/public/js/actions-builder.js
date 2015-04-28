@@ -20,7 +20,9 @@
   ActionsBuilder.prototype = {
     init: function() {
       this.fields = this.options.fields;
-      this.fields.unshift({label: __("Choose an Action..."), name: ""});
+      if (this.fields[0].label!==__("Choose an Action") + " ..."){
+        this.fields.unshift({label: __("Choose an Action") + " ...", name: ""});  
+      }
       this.data = this.options.data || [];
       var actions = this.buildActions(this.data);
       this.element.html(actions);
@@ -69,14 +71,15 @@
       }
 
       var _this = this;
-      select.change(function() {
+      select.on('change', function() {
         var val = $(this).val();
         var newField = _this._findField(val);
         fieldsDiv.empty();
 
         if(newField.fields) {
           for(var i=0; i < newField.fields.length; i++) {
-            fieldsDiv.append(_this.buildField(newField.fields[i]));
+            debugger;
+            fieldsDiv.append(_this.buildField(newField.fields[i], val));
           }
         }
 
@@ -89,13 +92,13 @@
         div.remove();
       });
 
+      div.append(removeLink);
       div.append(select);
       div.append(fieldsDiv);
-      div.append(removeLink);
       return div;
     },
 
-    buildField: function(field) {
+    buildField: function(field, query) {
       var div = $("<div>", {"class": "field"});
       var subfields = $("<div>", {"class": "subfields"});
       var _this = this;
@@ -106,33 +109,54 @@
       if(field.fieldType == "select") {
         var label = $("<label>", {"text": field.label});
         var select = $("<select>", {"name": field.name});
-
-        for(var i=0; i < field.options.length; i++) {
-          var optionData = field.options[i];
-          var option = $("<option>", {"text": optionData.label, "value": optionData.name});
-          option.data("optionData", optionData);
-          select.append(option);
+        var options, prefix="";
+        if (CoreFlow.wit(field.options)=='Function'){
+          
+          options = field.options(query);
+        } else {
+          options = field.options;
+        }
+        if (options.length && options[0].label!==""){
+          options.unshift({label: '', name: ''});  
+        }
+        
+        for(var i=0; i < options.length; i++) {
+          var optionData = options[i];
+          if (optionData.group){
+            prefix = __(optionData.label);
+          } else {
+            var option = $("<option>", {"text": prefix ? prefix + ": " + __(optionData.label) : __(optionData.label), "value": optionData.name});
+            option.data("optionData", optionData);
+            select.append(option);
+          }
         }
 
-        select.change(function() {
+        select.on('change', function() {
           var option = $(this).find("> :selected");
-          var optionData = option.data("optionData");
-          subfields.empty();
-          if(optionData.fields) {
-            for(var i=0; i < optionData.fields.length; i++) {
-              var f = optionData.fields[i];
-              subfields.append(_this.buildField(f));
-            }
+          if (option.length){
+            var optionData = option.data("optionData");
+            
+            subfields.empty();
+            if(optionData.fields) {
+              for(var i=0; i < optionData.fields.length; i++) {
+                var f = optionData.fields[i];
+                subfields.append(_this.buildField(f, optionData.query));
+              }
+            }  
           }
+          
         });
 
         select.change();
         div.append(select);
       }
-      else if(in_list(["text", "formula"], field.fieldType)) {
-        var input = $("<input>", {"type": "text", "name": field.name});
+      else if(in_list(["text", "formula", "tags"], field.fieldType)) {
+        var input = $("<input>", {"type": "text", "name": field.name, "placeholder": field.label, style: "width: 147px;"});
         div.append(input);
 
+        if (field.fieldType == "tags"){
+          CoreFlow.Widgets.Tags(div, input, field);
+        }
         if (field.fieldType == "formula"){
           var element = $("<a>", {"class": "value octicon octicon-gist"});
           div.append(element);

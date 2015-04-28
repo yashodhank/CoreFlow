@@ -1,5 +1,4 @@
-var global = this;
-
+frappe.provide("CoreFlow.RuleEngine");
 (function() {
   var standardOperators = {
     present: function(actual, target) {
@@ -36,7 +35,7 @@ var global = this;
     }
   };
 
-  var RuleEngine = global.RuleEngine = function RuleEngine(rule) {
+  var RuleEngine = CoreFlow.RuleEngine = function RuleEngine(rule) {
     rule = rule || {};
     this.operators = {};
     this.actions = rule.actions || [];
